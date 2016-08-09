@@ -21,10 +21,9 @@
     };
 
     elasticIndexIncementer.createNewIndex = (client, alias, mapping, callback) => {
-
         async.autoInject({
             alias        : callback => callback(null, alias),
-            indexOld     : callback => getRealElasticName(client, alias, callback),
+            indexOld     : callback => elasticIndexIncementer.getRealElasticName(client, alias, callback),
             indexNew     : (indexOld, callback) => callback(null, incrementGeoIndex(indexOld)),
             uploadMapping: (indexNew, callback) => uploadMapping(client, indexNew, mapping, callback),
         }, (err, results) => callback(err, results));
@@ -42,13 +41,13 @@
         client.indices.delete({index: indexOld}, (err, resp) => callback(err, resp));
     };
 
-    function getRealElasticName(client, alias, callback) {
+    elasticIndexIncementer.getRealElasticName = (client, alias, callback) => {
         getInfoAboutIndex(client, alias, (err, resp) => {
             let realName = _.findKey(resp, 'aliases');
             logger.debug(`alias ${alias} realname: ${realName}`);
             callback(err, realName);
         });
-    }
+    };
 
     function getInfoAboutIndex(client, alias, callback) {
         client.indices.get({index: alias}, (err, resp) => callback(err, resp));
