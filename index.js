@@ -27,7 +27,7 @@
             indexNew     : (indexOld, callback) => callback(null, incrementIndex(indexOld)),
             uploadMapping: (indexNew, callback) => uploadMapping(client, indexNew, mapping, callback),
             addAlias     : (indexNew, uploadMapping, callback) => createAliasForNewIndex(client, indexNew, alias, callback)
-        }, (err, results) => callback(err, results));
+        }, callback);
     };
 
     elasticIndexIncementer.switchAlias = (client, indexInfo, callback) => {
@@ -35,14 +35,14 @@
             async.series({
                 removeAlias: (callback, results) => updateAlias(client, 'remove', indexInfo.indexOld, indexInfo.alias, callback),
                 addAlias   : (callback, results) => updateAlias(client, 'add', indexInfo.indexNew, indexInfo.alias, callback),
-            }, (err, resp) => callback(err, resp));
+            }, callback);
         }
     };
 
     elasticIndexIncementer.removeOldIndex = (client, indexOld, callback) => {
         if (getVersionFromIndexName(indexOld) !== 0) {
             logger.debug("removing old search index");
-            client.indices.delete({index: indexOld}, (err, resp) => callback(err, resp));
+            client.indices.delete({index: indexOld}, callback);
         }
     };
 
@@ -61,7 +61,7 @@
     }
 
     function getInfoAboutIndex(client, alias, callback) {
-        client.indices.get({index: alias}, (err, resp) => callback(err, resp));
+        client.indices.get({index: alias}, callback);
     }
 
     function incrementIndex(indexOld) {
@@ -82,7 +82,7 @@
 
     function uploadMapping(client, indexName, mapping, callback) {
         logger.debug("setting up new index with appropriate mapping");
-        client.indices.create({index: indexName, body: mapping}, () => callback());
+        client.indices.create({index: indexName, body: mapping}, callback);
     }
 
     function updateAlias(client, action, index, alias, callback) {
