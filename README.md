@@ -1,5 +1,7 @@
 # elastic-index-incrementer
 
+[![NPM](https://nodei.co/npm/elastic-index-incrementer.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/elastic-index-incrementer/)
+
 ## API
 
 ### createNewIndex([client], indexName, mapping, callback)

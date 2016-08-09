@@ -1,7 +1,7 @@
 {
   "name": "elastic-index-incrementer",
-  "version": "1.0.3",
-  "description": "",
+  "version": "1.0.4",
+  "description": "Elastic index version manipulation tool",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
