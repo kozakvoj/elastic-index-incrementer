@@ -1,6 +1,7 @@
 # elastic-index-incrementer
 
 ## API
+
 ### createNewIndex([client], indexName, mapping, callback)
 The first run of this method (with empty database) will create a new index with an index name indexName_v1. An alias indexName will also be created.
 Every subsequent run will create an index with incremented version (indexName_v2, ...). There will be no changes with aliases.
