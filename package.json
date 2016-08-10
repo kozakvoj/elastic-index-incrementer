@@ -1,6 +1,6 @@
 {
   "name": "elastic-index-incrementer",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Elastic index version manipulation tool",
   "main": "index.js",
   "scripts": {
