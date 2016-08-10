@@ -31,7 +31,7 @@
     };
 
     elasticIndexIncementer.switchAlias = (client, indexInfo, callback) => {
-        if (getVersionFromIndexName(indexInfo.indexOld) !== 0) {
+        if (getVersionFromIndexName(indexInfo.indexOld, indexInfo.alias) !== 0) {
             async.series({
                 removeAlias: (callback, results) => updateAlias(client, 'remove', indexInfo.indexOld, indexInfo.alias, callback),
                 addAlias   : (callback, results) => updateAlias(client, 'add', indexInfo.indexNew, indexInfo.alias, callback),
@@ -64,20 +64,20 @@
         client.indices.get({index: alias}, callback);
     }
 
-    function incrementIndex(indexOld) {
-        let version = getVersionFromIndexName(indexOld) + 1;
-        let newIndexName = `${getIndexNameWithoutVersion(indexOld)}_v${version}`;
+    function incrementIndex(indexName) {
+        let version = getVersionFromIndexName(indexName) + 1;
+        let newIndexName = `${getAliasFromIndexName(indexName)}_v${version}`;
 
         logger.info(`new index name: ${newIndexName}`);
         return newIndexName;
     }
 
     function getVersionFromIndexName(indexName) {
-        return Number(indexName.substr(indexName.length - 1, indexName.length));
+        return Number(indexName.substr(indexName.indexOf("_") + 2, indexName.length));
     }
 
-    function getIndexNameWithoutVersion(index) {
-        return index.slice(0, -3);
+    function getAliasFromIndexName(indexName) {
+        return indexName.substr(0, indexName.indexOf("_"));
     }
 
     function uploadMapping(client, indexName, mapping, callback) {
