@@ -12,7 +12,7 @@ Every subsequent run will create an index with incremented version (indexName_v2
 indexInfoObj must be an object:
 ```javascript
 {
-    alias    : aliss
+    alias    : alias
     indexOld : indexOld
     indexNew : indexNew
 }
